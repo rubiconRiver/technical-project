@@ -22,4 +22,7 @@ describe('StringCalculatorService', () => {
   it('should return proper values', () => {
     expect(service.add('1,2,5')).toBe(8);
   });
+  it('should work properly with new lines in the input', () => {
+    expect(service.add('1\n,2,5')).toBe(8);
+  });
 });
