@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { StringCalculatorService } from './string-calculator.service';
 
 @Controller('string-calculator')
@@ -15,7 +15,6 @@ export class StringCalculatorController {
     return this.service.hardCodedAdd();
   }
 }
-
 
 export interface calculatorInputDTO {
   numbers: string;

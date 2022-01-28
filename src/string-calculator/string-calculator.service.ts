@@ -12,8 +12,8 @@ export class StringCalculatorService {
     let delimiters = [','];
 
     if (input.substring(0, 2) === '//') {
-      const newLinesIndex = input.indexOf('\n');
-      const delimiterSubstring = input.substring(2, newLinesIndex);
+      const newLineIndex = input.indexOf('\n');
+      const delimiterSubstring = input.substring(2, newLineIndex);
 
       // check for multiple delimiters
       if (delimiterSubstring.indexOf(',') !== -1) {
@@ -22,7 +22,7 @@ export class StringCalculatorService {
         delimiters = [delimiterSubstring];
       }
       // drop the delimiters subscript and leave the raw numbers
-      input = input.substring(newLinesIndex + 1);
+      input = input.substring(newLineIndex + 1);
     }
 
     let commaSeparatedNumbers = input;
@@ -45,7 +45,7 @@ export class StringCalculatorService {
 
   // To call this, change the number variable and go to http://localhost:3000/string-calculator in your browser
   hardCodedAdd(): number {
-    const numbers = `1\n,2,3`;
+    const numbers = `//;;,@,%%\n1;;4@7%%14`;
     return this.add(numbers);
   }
 }
