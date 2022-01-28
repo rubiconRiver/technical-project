@@ -2,19 +2,48 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class StringCalculatorService {
-  add(numbers: string): number {
-    if (!numbers) return 0;
 
-    const individualNumbers = numbers
+
+  //this function can take either a list of number separated
+  add(input: string): number {
+    if (!input) return 0;
+
+    // default case for inputs like '1,2,5'
+    let delimiters = [','];
+
+    if (input.substring(0, 2) === '//') {
+      const newLinesIndex = input.indexOf('\n');
+      const delimiterSubstring = input.substring(2, newLinesIndex);
+
+      // check for multiple delimiters
+      if (delimiterSubstring.indexOf(',') !== -1) {
+        delimiters = delimiterSubstring.split(',');
+      } else {
+        delimiters = [delimiterSubstring];
+      }
+      // drop the delimiters subscript and leave the raw numbers
+      input = input.substring(newLinesIndex + 1);
+    }
+
+    let commaSeparatedNumbers = input;
+    delimiters.forEach((delimiter) => {
+      commaSeparatedNumbers = commaSeparatedNumbers.split(delimiter).join(',');
+    });
+
+    const individualNumbers = commaSeparatedNumbers
       .split(',')
-      .map((numberAsString) => parseInt(numberAsString));
+      .map((numberAsString) => parseInt(numberAsString))
+      .filter((number) => number <= 1000);
 
-    // I could just as easily add this to the above pipe - but IMO this is a separate logical step and makes
-    // the code more readable this way
+    const negativeNumbers = individualNumbers.filter((number) => number < 0);
+    if (negativeNumbers.length > 0) {
+      throw new Error(`Negatives not allowed: ${negativeNumbers}`);
+    }
+
     return individualNumbers.reduce((total, number) => total + number);
   }
 
-  // To call this, just go to http://localhost:3000/string-calculator in your browser
+  // To call this, change the number variable and go to http://localhost:3000/string-calculator in your browser
   hardCodedAdd(): number {
     const numbers = `1\n,2,3`;
     return this.add(numbers);
